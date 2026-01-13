@@ -1,4 +1,4 @@
-version: 2
+version: 1
 
 project_name: repo2page
 
@@ -72,7 +72,7 @@ scoops:
 
 # DEB/RPM Packages (Linux)
 nfpms:
-  - maintainer: "Sanchit Agarwal <sanchit@example.com>"
+  - maintainer: "Sanchit Dhale <imsncht@gmail.com>"
     description: "Convert repositories into single, portable structure-preserving documents."
     homepage: "https://github.com/imsncht/repo2page"
     license: "MIT"
