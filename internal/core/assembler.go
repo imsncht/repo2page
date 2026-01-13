@@ -6,22 +6,15 @@ import (
 	"time"
 
 	"repo2page/internal/ignore"
-	"repo2page/internal/loader"
 )
 
 // AssembleInput represents all data needed by formatters.
 type AssembleInput struct {
 	RepoName string
 	Source   string
-	RootPath string
-	Files    []string // Ordered file paths (from tree resolver)
+	RootPath string         // Local path to repository root (also used for extracted GitHub repos)
+	Files    []string       // Ordered file paths (from tree resolver)
 	Options  ConvertOptions
-
-		// NEW (GitHub only)
-	GitHubOwner string
-	GitHubRepo  string
-	GitHubRef   string
-	IsGitHub    bool
 }
 
 // AssembleResult is the assembled, formatter-ready output.
@@ -53,33 +46,8 @@ func Assemble(input AssembleInput, ign *ignore.Engine) AssembleResult {
 			continue
 		}
 
-		// --------------------
-		// GitHub file reading
-		// --------------------
-		if input.IsGitHub {
-			content, lines, err := loader.ReadGitHubFile(
-				input.GitHubOwner,
-				input.GitHubRepo,
-				relPath,
-				input.GitHubRef,
-			)
-			if err != nil {
-				skipped++
-				warnings = append(warnings, relPath+": "+err.Error())
-				continue
-			}
-
-			renderedFiles = append(renderedFiles, RenderedFile{
-				Path:    relPath,
-				Content: content,
-			})
-			totalLines += lines
-			continue
-		}
-
-		// --------------------
-		// Local file reading
-		// --------------------
+		// Read file from local filesystem
+		// (GitHub repos are now extracted locally via tarball)
 		absPath := filepath.Join(input.RootPath, filepath.FromSlash(relPath))
 
 		read := ReadFileSafe(absPath, input.Options.MaxFileSizeKB)

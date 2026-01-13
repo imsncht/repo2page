@@ -1,11 +1,11 @@
 package core
 
-import "time"
 import (
 	"errors"
 	"fmt"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"repo2page/internal/ignore"
 	"repo2page/internal/loader"
@@ -13,16 +13,14 @@ import (
 
 // Convert is the primary entry point for repository conversion.
 func Convert(input RepoInput, options ConvertOptions) (*ConvertResult, error) {
-//	start := nowUTC()
-
 	// 1. Detect source type (if not provided)
 	if input.Source == SourceUnset {
-	detected, err := AutoDetectSource(input.PathOrURL)
-	if err != nil {
-		return nil, err
+		detected, err := AutoDetectSource(input.PathOrURL)
+		if err != nil {
+			return nil, err
+		}
+		input.Source = detected
 	}
-	input.Source = detected
-}
 
 	// 2. Load repository file list
 	var (
@@ -30,13 +28,6 @@ func Convert(input RepoInput, options ConvertOptions) (*ConvertResult, error) {
 		rootPath string
 		source   string
 	)
-
-	var (
-		owner string
-		repo  string
-		ref   string
-	)
-
 
 	switch input.Source {
 	case SourceLocal:
@@ -56,27 +47,34 @@ func Convert(input RepoInput, options ConvertOptions) (*ConvertResult, error) {
 			return nil, errors.New("GitHub repositories require an internet connection")
 		}
 
-		var err error
 		owner, repo, err := parseGitHubRepo(input.PathOrURL)
 		if err != nil {
 			return nil, err
 		}
 
-//		ref = input.Commit
-//		if ref == "" {
-//			ref = input.Branch
-//		}
-		
-		ref = input.Commit
+		ref := input.Commit
 		if ref == "" {
 			ref = input.Branch
 		}
 		if ref == "" {
-			ref = "main"
+			// Try to fetch default branch
+			defaultBranch, err := loader.FetchDefaultBranch(owner, repo)
+			if err == nil && defaultBranch != "" {
+				ref = defaultBranch
+			} else {
+				ref = "main"
+			}
 		}
 
+		// Download and extract tarball (much faster than individual file fetching)
+		extractedPath, cleanup, err := loader.DownloadRepoAsArchive(owner, repo, ref)
+		if err != nil {
+			return nil, fmt.Errorf("failed to download repository: %w", err)
+		}
+		defer cleanup() // Clean up temp directory after processing
 
-		files, err := loader.LoadGitHubRepository(owner, repo, ref)
+		// Use local loader on extracted directory
+		files, err := loader.LoadLocalRepository(extractedPath)
 		if err != nil {
 			return nil, err
 		}
@@ -86,7 +84,7 @@ func Convert(input RepoInput, options ConvertOptions) (*ConvertResult, error) {
 		}
 
 		source = fmt.Sprintf("https://github.com/%s/%s", owner, repo)
-		rootPath = "" // GitHub files are fetched virtually
+		rootPath = extractedPath // Now we have a local path!
 
 	default:
 		return nil, errors.New("unsupported source type")
@@ -100,45 +98,31 @@ func Convert(input RepoInput, options ConvertOptions) (*ConvertResult, error) {
 	tree := BuildTree(paths)
 	orderedPaths := FlattenTree(tree)
 
-	// 4. Ignore engine
-	var ign *ignore.Engine
-	if input.Source == SourceLocal {
-		engine, err := ignore.NewEngine(rootPath, options.ExcludePatterns)
-		if err != nil {
-			return nil, err
-		}
-		ign = engine
+	// 4. Ignore engine (now works for both local and GitHub repos)
+	engine, err := ignore.NewEngine(rootPath, options.ExcludePatterns)
+	if err != nil {
+		return nil, err
 	}
 
 	// 5. Assemble
 	assembled := Assemble(AssembleInput{
-		RepoName:     repoNameFromSource(input.PathOrURL),
-		Source:       source,
-		RootPath:     rootPath,
-		Files:        orderedPaths,
-		Options:      options,
-		GitHubOwner:  owner,
-		GitHubRepo:   repo,
-		GitHubRef:    ref,
-		IsGitHub:     input.Source == SourceGitHub,
-	}, ign)
+		RepoName: repoNameFromSource(input.PathOrURL),
+		Source:   source,
+		RootPath: rootPath,
+		Files:    orderedPaths,
+		Options:  options,
+	}, engine)
 
-
-	// 6. Format output
-//	var content string
-
-	
-
-	// 7. Final result
-return &ConvertResult{
-	Format:    options.Format,
-	Stats:     assembled.Stats,
-	Warnings:  assembled.Warnings,
-	Tree:      assembled.Tree,
-	Files:     assembled.Files,
-	Source:    source,
-	RepoName:  repoNameFromSource(input.PathOrURL),
-}, nil
+	// 6. Final result
+	return &ConvertResult{
+		Format:   options.Format,
+		Stats:    assembled.Stats,
+		Warnings: assembled.Warnings,
+		Tree:     assembled.Tree,
+		Files:    assembled.Files,
+		Source:   source,
+		RepoName: repoNameFromSource(input.PathOrURL),
+	}, nil
 }
 
 // --------------------
