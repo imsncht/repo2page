@@ -40,7 +40,7 @@ winget install repo2page
 
 ### From Source
 
-Ensure you have Go 1.25+ installed.
+Ensure you have Go 1.23+ installed.
 
 ```bash
 go install github.com/imsncht/repo2page/cmd/repo2page@latest
