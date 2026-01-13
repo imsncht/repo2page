@@ -18,8 +18,8 @@
 dist/
 
 # Project binaries
-repo2page
-repo2page.exe
+/repo2page
+/repo2page.exe
 
 # IDEs
 .vscode/

@@ -3,17 +3,26 @@ name: Publish to Winget
 on:
   release:
     types: [released]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag of the release to publish (leave empty for latest)'
+        required: false
 
 jobs:
   winget:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Submit to Winget
         uses: vedantmgoyal2009/winget-releaser@v2
         with:
           identifier: imsncht.repo2page
+          version: ${{ inputs.tag || github.event.release.tag_name }}
           description: "Convert repositories into single, portable structure-preserving documents."
           homepage: "https://github.com/imsncht/repo2page"
           license: "MIT"
-          installers-regex: '_windows_amd64.zip$'
+          installers-regex: '_windows_amd64\.zip$'
           token: ${{ secrets.WINGET_TOKEN }}
