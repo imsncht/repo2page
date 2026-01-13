@@ -102,13 +102,16 @@ func TestCLI_InvalidSource(t *testing.T) {
 	err := cmd.Run()
 
 	if err == nil {
-		t.Error("Expected error for non-existent path, got success")
+		t.Fatal("Expected error for non-existent path, got success")
 	}
-	// Check exit code?
+
+	// Check exit code
 	if exitError, ok := err.(*exec.ExitError); ok {
 		if exitError.ExitCode() == 0 {
-			t.Error("Expected non-zero exit code")
+			t.Errorf("Expected non-zero exit code, got %d", exitError.ExitCode())
 		}
+	} else {
+		t.Errorf("Expected exit error for non-existent path, got: %v", err)
 	}
 }
 
