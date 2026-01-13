@@ -14,10 +14,10 @@ func TestRenderMarkdown(t *testing.T) {
 		{Path: "main.go", Content: "package main"},
 	}
 	stats := core.Statistics{
-		FileCount: 1,
+		FileCount:   1,
 		GeneratedAt: time.Now(),
 	}
-	
+
 	output := RenderMarkdown("test-repo", "local", "├── main.go", files, stats, nil)
 
 	if !strings.Contains(output, "# Repository: test-repo") {
@@ -36,7 +36,7 @@ func TestRenderJSON(t *testing.T) {
 		{Path: "README.md", Content: "# Hello"},
 	}
 	stats := core.Statistics{
-		FileCount: 1,
+		FileCount:  1,
 		TotalLines: 1,
 	}
 

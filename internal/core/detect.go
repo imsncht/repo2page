@@ -1,8 +1,8 @@
 package core
 
 import (
-	"errors"
 	"context"
+	"errors"
 	"net"
 	"net/url"
 	"os"
@@ -46,7 +46,6 @@ func IsOnline() bool {
 	_, err := resolver.LookupIPAddr(ctx, "github.com")
 	return err == nil
 }
-
 
 // --------------------
 // Helper functions

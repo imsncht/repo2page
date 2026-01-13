@@ -15,7 +15,7 @@ type Progress struct {
 	done    chan bool
 	ticker  *time.Ticker
 	message string
-	
+
 	// For bar
 	total   int64
 	current int64
@@ -68,7 +68,7 @@ func (p *Progress) Add(n int64) {
 func (p *Progress) run() {
 	chars := []string{"⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"}
 	i := 0
-	
+
 	for {
 		select {
 		case <-p.done:

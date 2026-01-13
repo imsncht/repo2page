@@ -38,16 +38,16 @@ func TestAutoDetectSource(t *testing.T) {
 			// For local paths, we need them to exist for AutoDetectSource to return SourceLocal
 			// Otherwise it might return error or unknown.
 			// Ideally AutoDetect checks file existence.
-			
+
 			got, err := AutoDetectSource(tt.input)
 			if (err != nil) != tt.wantErr {
-				// Special case: if we expect SourceLocal and it returns error because dir doesn't exist, ignore for specific tests 
-				// or setup temp dirs? 
+				// Special case: if we expect SourceLocal and it returns error because dir doesn't exist, ignore for specific tests
+				// or setup temp dirs?
 				// Let's assume AutoDetectSource logic:
 				// 1. Is it GitHub URL/Short? -> GitHub
 				// 2. Does file exist? -> Local
 				// 3. Error
-				
+
 				// For the "Valid Local Path", if it doesn't exist on disk, we might want to skip or mock.
 				// For simple unit testing without mocks, I'll rely on the logic I know.
 				t.Errorf("AutoDetectSource() error = %v, wantErr %v", err, tt.wantErr)

@@ -28,13 +28,13 @@ func TestMain(m *testing.M) {
 	// Or we locate cmd/repo2page relative to this test file.
 	// This test file is in tests/integration/
 	// Project root is ../../
-	
+
 	wd, err := os.Getwd()
 	if err != nil {
 		fmt.Printf("Failed to get working directory: %v\n", err)
 		os.Exit(1)
 	}
-	
+
 	projectRoot := filepath.Join(wd, "..", "..")
 	// If running from project root using go test ./...
 	if filepath.Base(wd) == "repo2page" {
@@ -79,14 +79,14 @@ func TestCLI_SmallRepo(t *testing.T) {
 	if filepath.Base(wd) == "repo2page" {
 		projectRoot = "."
 	}
-	
+
 	fixturePath := filepath.Join(projectRoot, "tests", "fixtures", "small-repo")
 	outputPath := filepath.Join(os.TempDir(), "small-repo-output.md")
 	defer os.Remove(outputPath)
 
 	cmd := exec.Command(binaryPath, "--output", outputPath, fixturePath)
 	out, err := cmd.CombinedOutput()
-	
+
 	if err != nil {
 		t.Fatalf("Command failed: %v\nOutput: %s", err, string(out))
 	}
@@ -100,11 +100,11 @@ func TestCLI_SmallRepo(t *testing.T) {
 func TestCLI_InvalidSource(t *testing.T) {
 	cmd := exec.Command(binaryPath, "./non-existent-path")
 	err := cmd.Run()
-	
+
 	if err == nil {
 		t.Error("Expected error for non-existent path, got success")
 	}
-	// Check exit code? 
+	// Check exit code?
 	if exitError, ok := err.(*exec.ExitError); ok {
 		if exitError.ExitCode() == 0 {
 			t.Error("Expected non-zero exit code")

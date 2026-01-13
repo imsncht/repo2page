@@ -278,7 +278,6 @@ func DownloadRepoAsArchive(owner, repo, ref string, progressCallback func(int64,
 	return extractedRoot, cleanup, nil
 }
 
-
 // extractTarGz extracts a gzip-compressed tar archive to the destination directory.
 // Returns the path to the root directory inside the archive (GitHub adds a prefix dir).
 func extractTarGz(r io.Reader, destDir string) (string, error) {

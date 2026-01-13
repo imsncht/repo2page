@@ -2,16 +2,16 @@ package formatter
 
 import (
 	"encoding/json"
-	
+
 	"repo2page/internal/core"
 )
 
 // JSONOutput represents the schema for the JSON output format.
 type JSONOutput struct {
-	Metadata Metadata             `json:"metadata"`
-	Tree     string               `json:"tree"`
-	Files    []core.RenderedFile  `json:"files"`
-	Warnings []string             `json:"warnings,omitempty"`
+	Metadata Metadata            `json:"metadata"`
+	Tree     string              `json:"tree"`
+	Files    []core.RenderedFile `json:"files"`
+	Warnings []string            `json:"warnings,omitempty"`
 }
 
 type Metadata struct {

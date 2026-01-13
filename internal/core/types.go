@@ -41,32 +41,32 @@ type ConvertOptions struct {
 	MaxFileSizeKB      int          // Max file size per file (default: 500)
 	SummaryMode        bool         // Structure-only mode (no file contents)
 
-	OutputPath         string       // Optional output file path
-	ProgressCallback   func(int64, io.Reader) io.Reader // Optional callback for tracking progress
+	OutputPath       string                           // Optional output file path
+	ProgressCallback func(int64, io.Reader) io.Reader // Optional callback for tracking progress
 }
 
 // ConvertResult is the final output of a conversion operation.
 type ConvertResult struct {
-	Content  string      // Final rendered document
+	Content  string // Final rendered document
 	Format   OutputFormat
 	Stats    Statistics
-	Warnings []string    // Non-fatal issues encountered during processing
-	
+	Warnings []string // Non-fatal issues encountered during processing
+
 	// NEW (raw data for formatting)
-	Tree  string
-	Files []RenderedFile
-	Source string
-	RepoName string	
+	Tree     string
+	Files    []RenderedFile
+	Source   string
+	RepoName string
 }
 
 // Statistics contains conversion metrics.
 type Statistics struct {
-	FileCount        int           // Number of files included
-	TotalLines       int           // Total lines across all files
-	TotalSizeKB      int           // Total size of included files
-	SkippedFiles     int           // Number of skipped files
-	ProcessingTimeMs int64         // Total processing time in milliseconds
-	GeneratedAt      time.Time     // Timestamp of generation
+	FileCount        int       // Number of files included
+	TotalLines       int       // Total lines across all files
+	TotalSizeKB      int       // Total size of included files
+	SkippedFiles     int       // Number of skipped files
+	ProcessingTimeMs int64     // Total processing time in milliseconds
+	GeneratedAt      time.Time // Timestamp of generation
 }
 
 // RenderedFile represents a file with content ready for formatting.

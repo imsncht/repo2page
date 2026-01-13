@@ -12,8 +12,8 @@ import (
 type AssembleInput struct {
 	RepoName string
 	Source   string
-	RootPath string         // Local path to repository root (also used for extracted GitHub repos)
-	Files    []string       // Ordered file paths (from tree resolver)
+	RootPath string   // Local path to repository root (also used for extracted GitHub repos)
+	Files    []string // Ordered file paths (from tree resolver)
 	Options  ConvertOptions
 }
 

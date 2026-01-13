@@ -27,15 +27,15 @@ const (
 
 func main() {
 	var (
-		format       = flag.String("format", "md", "Output format: md, html, txt")
-		output       = flag.String("output", "", "Output file path")
-		branch       = flag.String("branch", "", "Git branch (auto-detected if empty)")
-		commit       = flag.String("commit", "", "Specific commit hash")
-		summary      = flag.Bool("summary", false, "Summary mode (no file contents)")
-		noTree       = flag.Bool("no-tree", false, "Disable directory tree")
-		maxFileSize  = flag.Int("max-file-size", 500, "Max file size to include (KB)")
-		jsonOutput   = flag.Bool("json", false, "Emit machine-readable JSON summary")
-		showVersion  = flag.Bool("version", false, "Show version information")
+		format      = flag.String("format", "md", "Output format: md, html, txt")
+		output      = flag.String("output", "", "Output file path")
+		branch      = flag.String("branch", "", "Git branch (auto-detected if empty)")
+		commit      = flag.String("commit", "", "Specific commit hash")
+		summary     = flag.Bool("summary", false, "Summary mode (no file contents)")
+		noTree      = flag.Bool("no-tree", false, "Disable directory tree")
+		maxFileSize = flag.Int("max-file-size", 500, "Max file size to include (KB)")
+		jsonOutput  = flag.Bool("json", false, "Emit machine-readable JSON summary")
+		showVersion = flag.Bool("version", false, "Show version information")
 	)
 
 	var excludes multiFlag
@@ -157,12 +157,12 @@ func main() {
 	// Machine-readable JSON output
 	if *jsonOutput {
 		j := map[string]any{
-			"status":  "success",
-			"files":   result.Stats.FileCount,
-			"lines":   result.Stats.TotalLines,
-			"size_kb": result.Stats.TotalSizeKB,
-			"skipped": result.Stats.SkippedFiles,
-			"output":  outPath,
+			"status":   "success",
+			"files":    result.Stats.FileCount,
+			"lines":    result.Stats.TotalLines,
+			"size_kb":  result.Stats.TotalSizeKB,
+			"skipped":  result.Stats.SkippedFiles,
+			"output":   outPath,
 			"warnings": result.Warnings,
 		}
 

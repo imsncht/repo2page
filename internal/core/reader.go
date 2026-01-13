@@ -80,7 +80,7 @@ func ReadFileSafe(path string, maxSizeKB int) ReadResult {
 	return ReadResult{
 		Content: content,
 		Lines:   lines,
-		SizeKB: sizeKB,
+		SizeKB:  sizeKB,
 	}
 }
 
