@@ -4,12 +4,14 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"repo2page/internal/core"
 	"repo2page/internal/formatter"
+	"repo2page/internal/ui"
 	"repo2page/internal/version"
 )
 
@@ -57,7 +59,8 @@ func main() {
 	outFormat := core.OutputFormat(strings.ToLower(*format))
 	if outFormat != core.FormatMarkdown &&
 		outFormat != core.FormatHTML &&
-		outFormat != core.FormatText {
+		outFormat != core.FormatText &&
+		outFormat != core.FormatJSON {
 		printError("invalid format: " + *format)
 		os.Exit(exitInvalidArgs)
 	}
@@ -76,49 +79,67 @@ func main() {
 		MaxFileSizeKB:      *maxFileSize,
 		SummaryMode:        *summary,
 		OutputPath:         *output,
+		ProgressCallback: func(total int64, r io.Reader) io.Reader {
+			bar := ui.NewProgressBar(total, "Downloading repository")
+			bar.Start()
+			return ui.NewProxyReader(r, bar)
+		},
 	}
 
 	result, err := core.Convert(input, options)
-if err != nil {
-	handleError(err)
-	os.Exit(exitConversionFail)
-}
+	if err != nil {
+		handleError(err)
+		os.Exit(exitConversionFail)
+	}
 
-var content string
+	var content string
 
-switch options.Format {
-case core.FormatText:
-	content = formatter.RenderText(
-		result.RepoName,
-		result.Source,
-		result.Tree,
-		result.Files,
-		result.Stats,
-		result.Warnings,
-	)
-case core.FormatMarkdown:
-	content = formatter.RenderMarkdown(
-		result.RepoName,
-		result.Source,
-		result.Tree,
-		result.Files,
-		result.Stats,
-		result.Warnings,
-	)
-case core.FormatHTML:
-	content = formatter.RenderHTML(
-		result.RepoName,
-		result.Source,
-		result.Tree,
-		result.Files,
-		result.Stats,
-		result.Warnings,
-	)
-default:
-	printError("unsupported format")
-	os.Exit(exitInvalidArgs)
-}
-
+	switch options.Format {
+	case core.FormatText:
+		content = formatter.RenderText(
+			result.RepoName,
+			result.Source,
+			result.Tree,
+			result.Files,
+			result.Stats,
+			result.Warnings,
+		)
+	case core.FormatMarkdown:
+		content = formatter.RenderMarkdown(
+			result.RepoName,
+			result.Source,
+			result.Tree,
+			result.Files,
+			result.Stats,
+			result.Warnings,
+		)
+	case core.FormatHTML:
+		content = formatter.RenderHTML(
+			result.RepoName,
+			result.Source,
+			result.Tree,
+			result.Files,
+			result.Stats,
+			result.Warnings,
+		)
+	case core.FormatJSON:
+		var err error
+		content, err = formatter.RenderJSON(
+			result.RepoName,
+			result.Source,
+			result.Tree,
+			result.Files,
+			result.Stats,
+			result.Warnings,
+		)
+		if err != nil {
+			printError("failed to flatten to JSON: " + err.Error())
+			os.Exit(exitUnexpectedError)
+		}
+	default:
+		printError("unsupported format")
+		os.Exit(exitInvalidArgs)
+	}
 
 	// Determine output path
 	outPath := *output

@@ -1,0 +1,21 @@
+{
+  "metadata": {
+    "repo_name": "Hello-World",
+    "source": "https://github.com/octocat/Hello-World",
+    "stats": {
+      "FileCount": 1,
+      "TotalLines": 2,
+      "TotalSizeKB": 0,
+      "SkippedFiles": 0,
+      "ProcessingTimeMs": 18,
+      "GeneratedAt": "2026-01-13T14:36:44.2825284Z"
+    }
+  },
+  "tree": "└── README\n",
+  "files": [
+    {
+      "Path": "README",
+      "Content": "Hello World!\n"
+    }
+  ]
+}

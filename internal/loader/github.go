@@ -201,7 +201,7 @@ func ReadGitHubFile(owner, repo, path, ref string) (string, int, error) {
 // DownloadRepoAsArchive downloads a GitHub repository as a tarball and extracts it.
 // Returns the path to the extracted directory and a cleanup function.
 // This is much more efficient than fetching files individually.
-func DownloadRepoAsArchive(owner, repo, ref string) (extractedPath string, cleanup func(), err error) {
+func DownloadRepoAsArchive(owner, repo, ref string, progressCallback func(int64, io.Reader) io.Reader) (extractedPath string, cleanup func(), err error) {
 	if owner == "" || repo == "" {
 		return "", nil, errors.New("invalid GitHub repository identifier")
 	}
@@ -249,32 +249,35 @@ func DownloadRepoAsArchive(owner, repo, ref string) (extractedPath string, clean
 	case http.StatusOK:
 		// continue
 	case http.StatusNotFound:
-		return "", nil, errors.New("GitHub repository or ref not found")
-	case http.StatusForbidden:
-		return "", nil, errors.New("GitHub API access forbidden or rate-limited")
+		return "", nil, fmt.Errorf("repository or branch not found (%s)", ref)
 	default:
-		return "", nil, fmt.Errorf("GitHub API error: %s", resp.Status)
+		return "", nil, fmt.Errorf("unexpected status: %s", resp.Status)
 	}
 
-	// Create temp directory for extraction
-	tempDir, err := os.MkdirTemp("", "repo2page-*")
+	tempDir, err := os.MkdirTemp("", "repo2page-gh-")
 	if err != nil {
-		return "", nil, fmt.Errorf("failed to create temp directory: %w", err)
+		return "", nil, fmt.Errorf("failed to create temp dir: %w", err)
 	}
 
 	cleanup = func() {
 		os.RemoveAll(tempDir)
 	}
 
-	// Extract tarball
-	extractedRoot, err := extractTarGz(resp.Body, tempDir)
+	var r io.Reader = resp.Body
+	if progressCallback != nil {
+		r = progressCallback(resp.ContentLength, resp.Body)
+	}
+
+	// Extract
+	extractedRoot, err := extractTarGz(r, tempDir)
 	if err != nil {
-		cleanup()
-		return "", nil, fmt.Errorf("failed to extract tarball: %w", err)
+		cleanup() // Clean up on failure
+		return "", nil, fmt.Errorf("failed to extract archive: %w", err)
 	}
 
 	return extractedRoot, cleanup, nil
 }
+
 
 // extractTarGz extracts a gzip-compressed tar archive to the destination directory.
 // Returns the path to the root directory inside the archive (GitHub adds a prefix dir).

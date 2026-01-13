@@ -67,7 +67,7 @@ func Convert(input RepoInput, options ConvertOptions) (*ConvertResult, error) {
 		}
 
 		// Download and extract tarball (much faster than individual file fetching)
-		extractedPath, cleanup, err := loader.DownloadRepoAsArchive(owner, repo, ref)
+		extractedPath, cleanup, err := loader.DownloadRepoAsArchive(owner, repo, ref, options.ProgressCallback)
 		if err != nil {
 			return nil, fmt.Errorf("failed to download repository: %w", err)
 		}
@@ -131,8 +131,9 @@ func Convert(input RepoInput, options ConvertOptions) (*ConvertResult, error) {
 
 func parseGitHubRepo(input string) (owner string, repo string, err error) {
 	s := strings.TrimPrefix(input, "https://github.com/")
+	s = strings.TrimSuffix(s, "/")
 	parts := strings.Split(s, "/")
-	if len(parts) < 2 {
+	if len(parts) != 2 {
 		return "", "", errors.New("invalid GitHub repository format")
 	}
 	return parts[0], parts[1], nil

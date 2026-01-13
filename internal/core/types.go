@@ -1,6 +1,9 @@
 package core
 
-import "time"
+import (
+	"io"
+	"time"
+)
 
 // SourceType represents where the repository is loaded from.
 type SourceType int
@@ -37,7 +40,9 @@ type ConvertOptions struct {
 	ExcludePatterns    []string     // Additional ignore patterns
 	MaxFileSizeKB      int          // Max file size per file (default: 500)
 	SummaryMode        bool         // Structure-only mode (no file contents)
+
 	OutputPath         string       // Optional output file path
+	ProgressCallback   func(int64, io.Reader) io.Reader // Optional callback for tracking progress
 }
 
 // ConvertResult is the final output of a conversion operation.

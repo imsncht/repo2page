@@ -1,0 +1,19 @@
+name: Publish to Winget
+
+on:
+  release:
+    types: [released]
+
+jobs:
+  winget:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submit to Winget
+        uses: vedantmgoyal2009/winget-releaser@v2
+        with:
+          identifier: imsncht.repo2page
+          description: "Convert repositories into single, portable structure-preserving documents."
+          homepage: "https://github.com/imsncht/repo2page"
+          license: "MIT"
+          installers-regex: '_windows_amd64.zip$'
+          token: ${{ secrets.WINGET_TOKEN }}
