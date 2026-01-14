@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **Optimized GitHub Fetching:** Replaced sequential file-by-file downloading with atomic tarball download and local extraction. This drastically reduces API calls (1 call per repo vs N calls) and improves speed by 10-100x.
+- **Progress Visualization:** Added a real-time progress bar for file extractions and repository downloads.
+- **Winget Distribution:** Added support for automated publishing to the Winget Community Repository via GitHub Actions.
 - **Local Repository Support:** Full file system traversal with `.gitignore` support.
 - **Auto-Detection:** Smart detection of source type (Local path vs GitHub URL) and connectivity status.
 - **Formatters:** Markdown, HTML, and Plain Text output formats.
