@@ -67,7 +67,7 @@ brews:
     homepage: "https://github.com/imsncht/repo2page"
     description: "Convert repositories into single, portable structure-preserving documents."
     license: "MIT"
-    folder: Formula
+    directory: Formula
     test: |
       system "#{bin}/repo2page --version"
 
