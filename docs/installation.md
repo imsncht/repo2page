@@ -20,13 +20,18 @@ winget install repo2page
 
 ## 2. macOS & Linux
 
-### Homebrew
+### Homebrew (Recommended)
 ```bash
 brew tap imsncht/homebrew-tap
 brew install repo2page
 ```
+OR
+```bash
+brew install imsncht/homebrew-tap/repo2page
+```
 
 ### One-Line Script
+This script automatically detects your OS and architecture, downloads the latest binary, and installs it to `/usr/local/bin`.
 ```bash
 curl -sfL https://raw.githubusercontent.com/imsncht/repo2page/main/scripts/install.sh | sh
 ```

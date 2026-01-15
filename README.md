@@ -26,6 +26,10 @@ curl -sfL https://raw.githubusercontent.com/imsncht/repo2page/main/scripts/insta
 brew tap imsncht/homebrew-tap
 brew install repo2page
 ```
+OR
+```bash
+brew install imsncht/homebrew-tap/repo2page
+```
 
 ### Scoop (Windows)
 ```bash

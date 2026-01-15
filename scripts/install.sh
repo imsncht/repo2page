@@ -24,9 +24,8 @@ LATEST_URL="https://api.github.com/repos/$OWNER/$REPO/releases/latest"
 
 echo "Finding latest release for $OS/$ARCH..."
 
-# Get download URL for specific OS/Arch
-# Note: This is a simplified fetcher. In production, use a more robust parsing logic.
-DOWNLOAD_URL=$(curl -s $LATEST_URL | grep "browser_download_url" | grep "$OS" | grep "$ARCH" | cut -d '"' -f 4)
+# Get download URL for specific OS/Arch and format
+DOWNLOAD_URL=$(curl -s $LATEST_URL | grep "browser_download_url" | grep "$OS" | grep "$ARCH" | grep "$FORMAT" | cut -d '"' -f 4)
 
 if [ -z "$DOWNLOAD_URL" ]; then
     echo "Error: Could not find release for $OS $ARCH"
