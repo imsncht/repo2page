@@ -7,11 +7,11 @@ before:
     - go mod tidy
 
 builds:
-  - env:
+  - id: unix
+    env:
       - CGO_ENABLED=0
     goos:
       - linux
-      - windows
       - darwin
     goarch:
       - amd64
@@ -19,6 +19,18 @@ builds:
     main: ./cmd/repo2page
     ldflags:
       - -s -w -X repo2page/internal/version.Version={{.Version}} -X repo2page/internal/version.Commit={{.Commit}} -X repo2page/internal/version.Date={{.Date}}
+
+  - id: windows
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    main: ./cmd/repo2page
+    ldflags:
+      - -X repo2page/internal/version.Version={{.Version}} -X repo2page/internal/version.Commit={{.Commit}} -X repo2page/internal/version.Date={{.Date}}
 
 archives:
   - format: tar.gz
