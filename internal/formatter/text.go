@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"repo2page/internal/core"
+	"github.com/imsncht/repo2page/internal/core"
 )
 
 // RenderText renders the repository into a plain text document.

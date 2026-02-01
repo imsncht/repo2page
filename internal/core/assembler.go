@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"repo2page/internal/ignore"
+	"github.com/imsncht/repo2page/internal/ignore"
 )
 
 // AssembleInput represents all data needed by formatters.

@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"repo2page/internal/ignore"
-	"repo2page/internal/loader"
+	"github.com/imsncht/repo2page/internal/ignore"
+	"github.com/imsncht/repo2page/internal/loader"
 )
 
 // Convert is the primary entry point for repository conversion.

@@ -1,6 +1,6 @@
 package repo2page
 
-import "repo2page/internal/core"
+import "github.com/imsncht/repo2page/internal/core"
 
 // Convert converts a repository (local path or GitHub URL)
 // into a single, portable document.

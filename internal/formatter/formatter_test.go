@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"repo2page/internal/core"
+	"github.com/imsncht/repo2page/internal/core"
 )
 
 func TestRenderMarkdown(t *testing.T) {

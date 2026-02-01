@@ -5,7 +5,7 @@ VERSION=$(shell git describe --tags --always --dirty || echo "dev")
 COMMIT=$(shell git rev-parse --short HEAD || echo "unknown")
 DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-LDFLAGS=-ldflags "-X 'repo2page/internal/version.Version=${VERSION}' -X 'repo2page/internal/version.Commit=${COMMIT}' -X 'repo2page/internal/version.Date=${DATE}'"
+LDFLAGS=-ldflags "-X 'github.com/imsncht/repo2page/internal/version.Version=${VERSION}' -X 'github.com/imsncht/repo2page/internal/version.Commit=${COMMIT}' -X 'github.com/imsncht/repo2page/internal/version.Date=${DATE}'"
 
 .PHONY: all build clean test run install fmt vet
 

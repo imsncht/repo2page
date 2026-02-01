@@ -18,7 +18,7 @@ builds:
       - arm64
     main: ./cmd/repo2page
     ldflags:
-      - -s -w -X repo2page/internal/version.Version={{.Version}} -X repo2page/internal/version.Commit={{.Commit}} -X repo2page/internal/version.Date={{.Date}}
+      - -s -w -X github.com/imsncht/repo2page/internal/version.Version={{.Version}} -X github.com/imsncht/repo2page/internal/version.Commit={{.Commit}} -X github.com/imsncht/repo2page/internal/version.Date={{.Date}}
 
   - id: windows
     env:
@@ -30,7 +30,7 @@ builds:
       - arm64
     main: ./cmd/repo2page
     ldflags:
-      - -X repo2page/internal/version.Version={{.Version}} -X repo2page/internal/version.Commit={{.Commit}} -X repo2page/internal/version.Date={{.Date}}
+      - -X github.com/imsncht/repo2page/internal/version.Version={{.Version}} -X github.com/imsncht/repo2page/internal/version.Commit={{.Commit}} -X github.com/imsncht/repo2page/internal/version.Date={{.Date}}
 
 archives:
   - format: tar.gz

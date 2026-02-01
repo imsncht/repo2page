@@ -3,7 +3,7 @@ package formatter
 import (
 	"encoding/json"
 
-	"repo2page/internal/core"
+	"github.com/imsncht/repo2page/internal/core"
 )
 
 // JSONOutput represents the schema for the JSON output format.

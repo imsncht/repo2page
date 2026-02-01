@@ -9,10 +9,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"repo2page/internal/core"
-	"repo2page/internal/formatter"
-	"repo2page/internal/ui"
-	"repo2page/internal/version"
+	"github.com/imsncht/repo2page/internal/core"
+	"github.com/imsncht/repo2page/internal/formatter"
+	"github.com/imsncht/repo2page/internal/ui"
+	"github.com/imsncht/repo2page/internal/version"
 )
 
 const (
