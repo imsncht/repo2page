@@ -27,7 +27,7 @@ const (
 
 func main() {
 	var (
-		format      = flag.String("format", "md", "Output format: md, html, txt")
+		format      = flag.String("format", "md", "Output format: md, html, txt, json")
 		output      = flag.String("output", "", "Output file path")
 		branch      = flag.String("branch", "", "Git branch (auto-detected if empty)")
 		commit      = flag.String("commit", "", "Specific commit hash")

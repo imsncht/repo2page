@@ -1,0 +1,32 @@
+﻿go : Usage of C:\Users\sanch\AppData\Local\Temp\go
+-build3356208557\b001\exe\main.exe:
+At line:1 char:1
++ go run ./cmd/repo2page/main.go --help 2>&1 | 
+out-file -filepath help_ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Usag 
+   e of C:\Use...1\exe\main.exe::String) [], Rem  
+  oteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  -branch string
+    	Git branch (auto-detected if empty)
+  -commit string
+    	Specific commit hash
+  -exclude value
+    	Exclude pattern (can be repeated)
+  -format string
+    	Output format: md, html, txt, json (default 
+"md")
+  -json
+    	Emit machine-readable JSON summary
+  -max-file-size int
+    	Max file size to include (KB) (default 500)
+  -no-tree
+    	Disable directory tree
+  -output string
+    	Output file path
+  -summary
+    	Summary mode (no file contents)
+  -version
+    	Show version information

@@ -8,7 +8,7 @@ It is designed to be **simple**, **fast**, and **universally accessible**, distr
 
 - **Local & GitHub Support:** Seamlessly convert local directories or remote GitHub repositories.
 - **Improved Performance:** Optimized GitHub fetching engine (via tarball download) for 10-100x faster processing.
-- **Multiple Formats:** Export to Markdown (`.md`), HTML (`.html`), or Plain Text (`.txt`).
+- **Multiple Formats:** Export to Markdown (`.md`), HTML (`.html`), JSON (`.json`), or Plain Text (`.txt`).
 - **Structure Preservation:** Maintains the directory tree structure in the output.
 - **Smart Requires:** Automatically respects `.gitignore` and comes with sensible default ignore patterns (e.g., node_modules, .git).
 - **Zero Dependencies:** Compiles to a single binary. No Node.js, Python, or JVM required.
