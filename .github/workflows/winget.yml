@@ -28,5 +28,5 @@ jobs:
         with:
           identifier: imsncht.repo2page
           release-tag: ${{ github.event.inputs.tag || steps.latest_release.outputs.tag || github.event.release.tag_name }}
-          installers-regex: '_windows_(amd64|arm64)\.zip$'
+          installers-regex: '_windows_.*\.zip$'
           token: ${{ secrets.WINGET_TOKEN }}
