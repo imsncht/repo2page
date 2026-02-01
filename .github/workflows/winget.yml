@@ -16,10 +16,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Get latest release
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.tag == ''
+        id: latest_release
+        run: |
+          latest_tag=$(curl -s https://api.github.com/repos/${{ github.repository }}/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+          echo "tag=$latest_tag" >> $GITHUB_OUTPUT
+
       - name: Submit to Winget
         uses: vedantmgoyal2009/winget-releaser@v2
         with:
           identifier: imsncht.repo2page
-          release-tag: ${{ inputs.tag || github.event.release.tag_name }}
+          release-tag: ${{ github.event.inputs.tag || steps.latest_release.outputs.tag || github.event.release.tag_name }}
           installers-regex: '_windows_(amd64|arm64)\.zip$'
           token: ${{ secrets.WINGET_TOKEN }}
