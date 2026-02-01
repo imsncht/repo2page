@@ -119,8 +119,9 @@ h1, h2 {
 	margin-top: 40px;
 }
 
-.tree {
-	background: #f6f8fa;
+pre.tree {
+	background: #f8f9fa !important;
+	color: #000 !important;
 	padding: 16px;
 	overflow-x: auto;
 }
